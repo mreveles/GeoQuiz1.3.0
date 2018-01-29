@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
+
     private Button mTrueButton;
     private Button mFalseButton;
     private ImageButton mNextButton;
@@ -37,6 +39,10 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
+
+        if(savedInstanceState != null){
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX,0);
+        }
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mQuestionTextView.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +111,13 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle saveInstanceState){
+        super.onSaveInstanceState(saveInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        saveInstanceState.putInt(KEY_INDEX,mCurrentIndex);
+    }
+
+    @Override
     public void onStop(){
         super.onStop();
         Log.d(TAG,"onStop() called");
@@ -133,7 +146,7 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         Toast customToast = Toast.makeText(this,messageResId,Toast.LENGTH_SHORT);
-        customToast.setGravity(Gravity.TOP,0,650);
+        customToast.setGravity(Gravity.TOP,0,0);
         customToast.show();
     }
 }
